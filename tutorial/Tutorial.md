@@ -110,3 +110,7 @@ st = Load10X_Spatial('.','V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc
 spadecon_proportions = read.csv('spadecon_proportions.csv', row.names = 1, header= T, check.names = F)
 st@meta.data = spadecon_proportions
 SpatialFeaturePlot(st, features = 'Tumor', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('10X Visium Breast Cancer') + theme(plot.title = element_text(size = 15, face = "bold"))
+```
+  
+![pdf](tumor_heatmap.pdf) 
+
