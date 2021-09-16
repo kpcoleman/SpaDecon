@@ -78,7 +78,7 @@ SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as Ann
 adata_sc = sc.read('bc_sc.h5ad')
 
 #Read SRT GE data (rows = spots, columns = genes)
-adata_st = sc.read_10x_h5('V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5)
+adata_st = sc.read_10x_h5('V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5')
 adata_st.var_names_make_unique()
   
 #Read SRT histology image
