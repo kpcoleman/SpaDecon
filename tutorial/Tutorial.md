@@ -47,6 +47,7 @@ import scanpy as sc
 import pandas as pd
 import numpy as np
 from skimage import io
+import os
 ```
 
 ### 2. Load data
