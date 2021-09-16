@@ -12,7 +12,7 @@ import platform
 platform.python_version()
 ```
 
-    '3.6.8'
+    '3.7.11'
 
 We recommend creating and activating a new conda environment when installing the SpaDecon package. For instance, 
 ```bash
