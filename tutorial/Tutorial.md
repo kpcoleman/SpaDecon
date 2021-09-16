@@ -106,7 +106,7 @@ spadecon_proportions.to_csv('spadecon_proportions.csv')
 library(Seurat)
 library(SeuratData)
 library(ggplot2)
-st = Load10X_Spatial('spadecon_tutorial_data','V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5', assay = 'Spatial')
+st = Load10X_Spatial('.','V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5', assay = 'Spatial')
 spadecon_proportions = read.csv('spadecon_proportions.csv', row.names = 1, header= T, check.names = F)
 st@meta.data = spadecon_proportions
 SpatialFeaturePlot(st, features = 'Tumor', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('Tumor) + theme(plot.title = element_text(size = 15, face = "bold"))
