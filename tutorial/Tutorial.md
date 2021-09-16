@@ -15,7 +15,7 @@ platform.python_version()
 
     '3.6.8'
 
-We recommend creating a conda environment when installing the SpaDecon package. For instance, 
+We recommend creating and activating a new conda environment when installing the SpaDecon package. For instance, 
 ```bash
 conda create -n SpaDecon python=3.7
 conda activate SpaDeccon
