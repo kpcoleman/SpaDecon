@@ -62,16 +62,19 @@ SpaDecon requires the ST and scRNA-seq gene expression data to be stored as AnnD
 
 ```python
 #Read annotated scRNA-seq GE data (rows = cells, columns = genes, cell types in adata_sc.obs.celltype)
-adata_sc = sc.read('../data/sc.h5ad')
+adata_sc = sc.read('spadecon_tutorial_data/bc_sc.h5ad')
 
 #Read SRT GE data (rows = spots, columns = genes)
 adata_st = sc.read_10x_h5('spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5)
-
+adata_st.var_names_make_unique()
+  
 #Read SRT histology image
-image=io.imread("spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_image.tif")
+histology = io.imread("spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_image.tif")
 
 #Read file with SRT spatial locations
-spatial=pd.read_csv("spadecon_tutorial_data/tissue_positions_list.csv",header=None,index_col=0) 
+locations = pd.read_csv("spadecon_tutorial_data/tissue_positions_list.csv",header=None,index_col=0) 
+locations = locations.loc[adata_st.obs.index]
+
 ```
 
 
@@ -79,15 +82,17 @@ spatial=pd.read_csv("spadecon_tutorial_data/tissue_positions_list.csv",header=No
 
 ```python
 clf = spd.SpaDecon()
-spd_proportions = clf.deconvolution(adata_sc, adata_st, image, spatial)
+clf.deconvolution(source_data=adata_sc, target_data=adata_st, histology_image=histology, spatial_locations=locations)
+spadecon_proportions = clf.props
+spadecon_proportions.to_csv('spadecon_proportions.csv')  
 ```
 
-### 4. Plot Results (R\)
+### 4. Visualization of results using Seurat (R\)
 ```R
 library(Seurat)
 library(SeuratData)
 library(ggplot2)
-anterior <- LoadData("stxBrain", type = "anterior1")
-spd_proportions = read.csv('../data/spd_proportions.csv', row.names = 1, header= T, check.names = F)
-anterior@meta.data = spd_proportions
-SpatialFeaturePlot(anterior, features = 'L6', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('Anterior1_L6) + theme(plot.title = element_text(size = 15, face = "bold"))
+st = Load10X_Spatial('spadecon_tutorial_data','V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5', assay = 'Spatial')
+spadecon_proportions = read.csv('spadecon_proportions.csv', row.names = 1, header= T, check.names = F)
+st@meta.data = spadecon_proportions
+SpatialFeaturePlot(st, features = 'Tumor', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('Tumor) + theme(plot.title = element_text(size = 15, face = "bold"))
