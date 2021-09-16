@@ -3,7 +3,7 @@
 
 <center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*
 
-<br>
+<br />
  
 The files used in this tutorial can be downloaded from: https://drive.google.com/drive/folders/1_eBGKMVYh4p1eiHhrJASnqOD9z_CP5e0?usp=sharing   
  
