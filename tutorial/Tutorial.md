@@ -11,19 +11,36 @@ platform.python_version()
 ```
 
     '3.6.8'
-  
 
-  
+We recommend creating a conda environment when installing the SpaDecon package. For instance, 
+```
+"""    
+conda create -n SpaDecon python=3.7
+conda activate SpaDeccon
+```
+"""        
     
-- Download SpaDecon package from GitHub and install locally: 
+There are mulitple ways to install SpaDecon:
+    
+- Install SpaDecon using PyPI:
+```
+"""    
+pip3 install SpaDecon   
+```
+"""
+    
+- Download and install SpaDecon package from GitHub: 
 
 ```
 """
 git clone https://github.com/kylepcoleman87/SpaDecon
-cd SpaDecon/SpaDecon_package/
+cd SpaDecon/
 python3 setup.py install --user
 """
 ```
+
+
+    
 ### 1. Import python modules
 
 
