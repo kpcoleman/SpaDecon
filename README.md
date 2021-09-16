@@ -1,4 +1,4 @@
-# # SpaDecon
+## SpaDecon
 
 ## SpaDecon: cell-type deconvolution in spatial transcriptomics with transfer learning
 
