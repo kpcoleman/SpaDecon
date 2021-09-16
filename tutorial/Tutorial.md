@@ -4,7 +4,7 @@
 <center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*
 
     
-The files used in this tutorial can be downloaded from: https://drive.google.com/file/d/1ZpbCGrCEwtlP4HcMoTiqhhheGlChh9di/view?usp=sharing    
+The files used in this tutorial can be downloaded from: https://drive.google.com/drive/folders/1_eBGKMVYh4p1eiHhrJASnqOD9z_CP5e0?usp=sharing   
  
 ### 0. Package installation
 - SpaDecon installation requires a python version over 3.5.  You can check your version of python by entering the following commands: 
