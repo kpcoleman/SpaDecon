@@ -1,12 +1,12 @@
 <h1><center>SpaDecon Tutorial</center></h1>
 
 
-<center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*  
+<center>Authors: Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*  
   
    
  
 ### 0. Package installation
-- SpaDecon installation requires a python version over 3.5.  You can check your version of python by entering the following commands: 
+- SpaDecon installation requires a python version of at least 3.6. The version of python can be checked by: 
 ```python
 import platform
 platform.python_version()
@@ -87,6 +87,7 @@ histology = io.imread("V1_Breast_Cancer_Block_A_Section_1_image.tif")
 #Read file with SRT spatial locations
 locations = pd.read_csv("tissue_positions_list.csv",header=None,index_col=0) 
 locations = locations.loc[adata_st.obs.index]
+  
 ```
 
 
