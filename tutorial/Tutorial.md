@@ -55,10 +55,18 @@ Please download the spadecon_tutorial_data folder from: https://drive.google.com
 SpaDecon requires four input data files:  
 - Gene expression matrix for SRT data 
 - Gene expression matrix for scRNA-seq data (with cell type labels)
-- Spatial coordinates of SRT spots (optional)
 - Histology image for SRT data (optional)
+- Spatial coordinates of SRT spots (optional)
+
+The spatial locations file should contain 5 columns:  
+  (0) Indicator (equal to 1 for all spots in SRT capture area)   
+  (1) x coordinate  
+  (2) y coordinate  
+  (3) x pixel coordinate  
+  (4) y pixel coordinate
+  
 <br>
-SpaDecon requires the ST and scRNA-seq gene expression data to be stored as AnnData matrices.  The rows (observations) of the matrices are the samples and the columns (variables) are the genes.
+SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as AnnData matrices.  The rows (observations) of the matrices are the samples and the columns (variables) are the genes.
 
 
 
@@ -66,19 +74,18 @@ SpaDecon requires the ST and scRNA-seq gene expression data to be stored as AnnD
 #set working directory to spadecon_tutorial_data using os.chdir()
   
 #Read annotated scRNA-seq GE data (rows = cells, columns = genes, cell types in adata_sc.obs.celltype)
-adata_sc = sc.read('spadecon_tutorial_data/bc_sc.h5ad')
+adata_sc = sc.read('bc_sc.h5ad')
 
 #Read SRT GE data (rows = spots, columns = genes)
-adata_st = sc.read_10x_h5('spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5)
+adata_st = sc.read_10x_h5('V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5)
 adata_st.var_names_make_unique()
   
 #Read SRT histology image
-histology = io.imread("spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_image.tif")
+histology = io.imread("V1_Breast_Cancer_Block_A_Section_1_image.tif")
 
 #Read file with SRT spatial locations
-locations = pd.read_csv("spadecon_tutorial_data/tissue_positions_list.csv",header=None,index_col=0) 
+locations = pd.read_csv("tissue_positions_list.csv",header=None,index_col=0) 
 locations = locations.loc[adata_st.obs.index]
-
 ```
 
 
