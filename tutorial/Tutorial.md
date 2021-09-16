@@ -43,9 +43,10 @@ python3 setup.py install --user
 
 
 ```python
-import numpy as np
-import scanpy as sc
 import SpaDecon as spd
+import scanpy as sc
+import pandas as pd
+import numpy as np
 from skimage import io
 ```
 
