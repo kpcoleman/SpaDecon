@@ -1,7 +1,7 @@
 <h1><center>SpaDecon Tutorial</center></h1>
 
 
-<center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Mingyao Li*
+<center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*
 
 ### 0. Package installation
 - SpaDecon installation requires a python version over 3.5.  You can check your version of python by entering the following commands: 
@@ -46,7 +46,7 @@ import SpaDecon as spd
 from skimage import io
 ```
 
-### 2. Read in data
+### 2. Load data
 SpaDecon requires four input data files:  
 - Gene expression matrix for SRT data 
 - Gene expression matrix for scRNA-seq data (with cell type labels)
@@ -58,17 +58,17 @@ SpaDecon requires the ST and scRNA-seq gene expression data to be stored as AnnD
 
 
 ```python
-#Read annotated scRNA-seq data (rows = cells, columns = genes)
+#Read annotated scRNA-seq GE data (rows = cells, columns = genes, cell types in adata_sc.obs.celltype)
 adata_sc = sc.read('../data/sc.h5ad')
 
-#Read ST data (rows = spots, columns = genes)
-adata_st = sc.read_10x_mtx('./spatial/anterior/filtered_feature_bc_matrix2', var_names='gene_symbols', cache = True)
+#Read SRT GE data (rows = spots, columns = genes)
+adata_st = sc.read_10x_h5('spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5)
 
-#Read histology image for ST data
-image=io.imread("../tutorial/data/histology.tif")
+#Read SRT histology image
+image=io.imread("spadecon_tutorial_data/V1_Breast_Cancer_Block_A_Section_1_image.tif")
 
-#Read file with spatial locations of spots in ST data
-spatial=pd.read_csv("../tutorial/data/positions.txt",sep=",",header=None,na_filter=False,index_col=0) 
+#Read file with SRT spatial locations
+spatial=pd.read_csv("spadecon_tutorial_data/tissue_positions_list.csv",header=None,index_col=0) 
 ```
 
 
