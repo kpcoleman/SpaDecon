@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: SpaDecon
+Version: 1.0.8
+Summary: SpaDecon: Integrating gene expression and histology information to perform cell type deconvolution on spatial transcriptomics data
+Home-page: https://github.com/kylepcoleman87/SpaDecon
+Author: Kyle Coleman
+Author-email: kylecole@pennmedicine.upenn.edu
+License: UNKNOWN
+Description: # SpaDecon1
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
