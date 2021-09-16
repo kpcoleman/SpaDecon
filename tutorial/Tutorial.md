@@ -4,7 +4,6 @@
 <center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*  
   
    
-The files used in this tutorial can be downloaded from: https://drive.google.com/drive/folders/1_eBGKMVYh4p1eiHhrJASnqOD9z_CP5e0?usp=sharing   
  
 ### 0. Package installation
 - SpaDecon installation requires a python version over 3.5.  You can check your version of python by entering the following commands: 
@@ -51,6 +50,8 @@ from skimage import io
 ```
 
 ### 2. Load data
+Please download the spadecon_tutorial_data folder from: https://drive.google.com/drive/folders/1_eBGKMVYh4p1eiHhrJASnqOD9z_CP5e0?usp=sharing
+
 SpaDecon requires four input data files:  
 - Gene expression matrix for SRT data 
 - Gene expression matrix for scRNA-seq data (with cell type labels)
@@ -62,6 +63,8 @@ SpaDecon requires the ST and scRNA-seq gene expression data to be stored as AnnD
 
 
 ```python
+#set working directory to spadecon_tutorial_data using os.chdir()
+  
 #Read annotated scRNA-seq GE data (rows = cells, columns = genes, cell types in adata_sc.obs.celltype)
 adata_sc = sc.read('spadecon_tutorial_data/bc_sc.h5ad')
 
