@@ -3,7 +3,7 @@
 
 <center>Author: Kyle Coleman, Jian Hu, Amelia Schroeder, Mingyao Li*
 
-### 0. Installation
+### 0. Package installation
 - SpaDecon installation requires a python version over 3.5.  You can check your version of python by entering the following commands: 
 ```python
 import platform
@@ -36,7 +36,7 @@ python3 setup.py install --user
 
 
     
-### 1. Import python modules
+### 1. Import modules
 
 
 ```python
@@ -47,11 +47,11 @@ from skimage import io
 ```
 
 ### 2. Read in data
-The current version of SpaDecon requires four input data files:  
-- Gene expression matrix for ST data 
+SpaDecon requires four input data files:  
+- Gene expression matrix for SRT data 
 - Gene expression matrix for scRNA-seq data (with cell type labels)
-- Spatial coordinates of ST spots (optional)
-- Histology image for ST data (optional)
+- Spatial coordinates of SRT spots (optional)
+- Histology image for SRT data (optional)
 <br>
 SpaDecon requires the ST and scRNA-seq gene expression data to be stored as AnnData matrices.  The rows (observations) of the matrices are the samples and the columns (variables) are the genes.
 
