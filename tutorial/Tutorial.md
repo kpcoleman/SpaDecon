@@ -21,20 +21,17 @@ conda activate SpaDeccon
 There are mulitple ways to install SpaDecon:
     
 - Install SpaDecon using PyPI:
-```
-"""    
+
+```bash
 pip3 install SpaDecon   
-```
-"""
+```    
     
 - Download and install SpaDecon package from GitHub: 
 
-```
-"""
+```bash
 git clone https://github.com/kylepcoleman87/SpaDecon
 cd SpaDecon/
 python3 setup.py install --user
-"""
 ```
 
 
