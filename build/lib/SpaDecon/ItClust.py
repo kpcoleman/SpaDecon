@@ -157,9 +157,9 @@ class transfer_learning_clf(object):
         self.q=q
         #np.savetxt("testq.txt",q)
         y_pred1 = q.argmax(1)
-        print('y_pred1',y_pred1)
-        print('list(np.sort(np.unique(y_pred1)))',list(np.sort(np.unique(y_pred1))))
-        print('celltypes1',celltypes1)
+        #print('y_pred1',y_pred1)
+        #print('list(np.sort(np.unique(y_pred1)))',list(np.sort(np.unique(y_pred1))))
+        #print('celltypes1',celltypes1)
         celltypes1 = [celltypes1[i] for i in list(np.sort(np.unique(y_pred1)))]
         print("   Source network optimized")
         print("...Initializing target network using source network weights...")

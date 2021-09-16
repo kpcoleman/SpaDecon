@@ -325,7 +325,7 @@ class DEC(object):
             y_pred = q.argmax(1)
             #celltypes = list(np.sort(np.unique(y_pred)))
             celltypes = [celltypes[i] for i in list(np.sort(np.unique(y_pred)))]
-            print(celltypes)
+            #print(celltypes)
             # check stop criterion
             #delta_label = np.sum(y_pred != y_pred_last).astype(np.float32) / y_pred.shape[0]
             #y_pred_last = np.copy(y_pred)
@@ -409,8 +409,8 @@ class DEC(object):
         #q.columns = list(celltypes)
         y_pred = q.argmax(1)
         #celltypes = [celltypes[i] for i in list(np.sort(np.unique(y_pred)))]
-        print(celltypes)
-        print(q.shape)
+        #print(celltypes)
+        #print(q.shape)
 
         #return y0, representing the mapping reference for y
         return Embeded_z,q,celltypes
