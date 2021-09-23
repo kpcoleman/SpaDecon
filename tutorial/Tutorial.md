@@ -114,7 +114,7 @@ histology = io.imread("V1_Breast_Cancer_Block_A_Section_1_image.tif")
 
 #Read file with SRT spatial locations
 locations = pd.read_csv("tissue_positions_list.csv",header=None,index_col=0) 
-locations = locations.loc[adata_st.obs.index]
+locations = locations.loc[adata_srt.obs.index]
 ```
 
 ### 3. Run SpaDecon
