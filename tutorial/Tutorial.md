@@ -138,7 +138,4 @@ st@meta.data = spadecon_proportions
 SpatialFeaturePlot(st, features = 'Tumor', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('10X Visium Breast Cancer') + theme(plot.title = element_text(size = 15, face = "bold"))
 ```
 
-<p align="center">
-<img width="460" height="300" src="http://www.fillmurray.com/460/300">
-</p>
 ![png](bc_tumor_heatmap.png) 
