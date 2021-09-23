@@ -54,8 +54,8 @@ import os
 Please download the spadecon_tutorial_data folder from: https://drive.google.com/drive/folders/1_eBGKMVYh4p1eiHhrJASnqOD9z_CP5e0?usp=sharing
 
 SpaDecon requires four input data files:  
-- Gene expression matrix for SRT data 
-- Gene expression matrix for scRNA-seq data (with cell type labels)
+- Gene expression (GE) matrix for SRT data 
+- GE matrix for scRNA-seq data (with cell type labels)
 - Histology image for SRT data (optional)
 - Spatial coordinates of SRT spots (optional)
 
@@ -67,7 +67,7 @@ The spatial locations file should contain 5 columns:
   (4) y pixel coordinate
   
 <br>
-SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as AnnData matrices.  
+SpaDecon requires the SRT and scRNA-seq GE data to be stored as AnnData matrices.  
 
 <br>
 (1) If reading in GE data in the form of h5/h5ad files:
