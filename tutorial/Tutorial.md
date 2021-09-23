@@ -67,36 +67,61 @@ The spatial locations file should contain 5 columns:
   (4) y pixel coordinate
   
 <br>
-SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as AnnData matrices.  The rows (observations) of the matrices are the samples and the columns (variables) are the genes.
+SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as AnnData matrices. The rows (observations) of the matrices are the samples and the columns (variables) are the genes.
 
-
+(1) If reading in data in the form of h5/h5ad files:
 
 ```python
 #set working directory to spadecon_tutorial_data using os.chdir()
   
-#Read annotated scRNA-seq GE data (rows = cells, columns = genes, cell types in adata_sc.obs.celltype)
+#Read annotated scRNA-seq GE data (observations = cells, variables = genes, cell types in adata_sc.obs.celltype)
 adata_sc = sc.read('bc_sc.h5ad')
 
 #Read SRT GE data (rows = spots, columns = genes)
-adata_st = sc.read_10x_h5('V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5')
-adata_st.var_names_make_unique()
+adata_srt = sc.read_10x_h5('V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5')
+adata_srt.var_names_make_unique()
   
+```
+  
+(2) If reading in data in the form of csv files:
+```python
+  #set working directory to spadecon_tutorial_data using os.chdir()
+  
+  #Read scRNA-seq GE data (rows = cells, columns = genes)
+  sc_ge = pd.read_csv('bc_sc_ge.csv', index_col = 0)
+  
+  #Read scRNA-seq cell-type labels
+  sc_types = pd.read_csv('bc_sc_types.csv', index_col = 0)
+  
+  #Convert scRNA-seq GE data to AnnData object
+  adata_sc = sc.AnnData(sc_ge)
+  
+  #Insert cell-type labels into "celltype" column adata_sc.obs
+  adata_sc.obs['celltype'] = sc_types['celltype']
+  
+  #Read SRT GE data (rows = cells, columns = genes)
+  srt_ge = pd.read_csv('bc_srt_ge.csv', index_col = 0)
+  
+  #Convert SRT GE data to AnnData object
+  adata_srt = sc.AnnData(srt_ge)
+```  
+
+  
+```python  
 #Read SRT histology image
 histology = io.imread("V1_Breast_Cancer_Block_A_Section_1_image.tif")
 
 #Read file with SRT spatial locations
 locations = pd.read_csv("tissue_positions_list.csv",header=None,index_col=0) 
 locations = locations.loc[adata_st.obs.index]
-  
 ```
-
 
 ### 3. Run SpaDecon
 
 ```python
 clf = spd.SpaDecon()
-clf.deconvolution(source_data=adata_sc, target_data=adata_st, histology_image=histology, spatial_locations=locations, technology='Visium')
-#The technology parameter is used to determine an upper bound on the number of cell types per spot
+clf.deconvolution(source_data=adata_sc, target_data=adata_srt, histology_image=histology, spatial_locations=locations, technology='Visium')
+#The technology parameter is used to determine an upper bound on the number of cell types per spot (specify "Visium" or "ST")
 spadecon_proportions = clf.props
 spadecon_proportions.to_csv('spadecon_proportions.csv')  
 ```
@@ -112,5 +137,5 @@ st@meta.data = spadecon_proportions
 SpatialFeaturePlot(st, features = 'Tumor', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('10X Visium Breast Cancer') + theme(plot.title = element_text(size = 15, face = "bold"))
 ```
   
-![pdf](bc_tumor_heatmap.png) 
+![png](bc_tumor_heatmap.png) 
 
