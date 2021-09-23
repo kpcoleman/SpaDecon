@@ -106,8 +106,9 @@ adata_srt.var_names_make_unique()
   #Convert SRT GE data to AnnData object
   adata_srt = sc.AnnData(srt_ge)
 ```  
-
   
+  
+Read in SRT histology image and spatial locations
 ```python  
 #Read SRT histology image
 histology = io.imread("V1_Breast_Cancer_Block_A_Section_1_image.tif")
