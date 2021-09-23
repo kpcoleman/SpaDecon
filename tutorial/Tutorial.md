@@ -67,9 +67,9 @@ The spatial locations file should contain 5 columns:
   (4) y pixel coordinate
   
 <br>
-SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as AnnData matrices. The rows (observations) of the matrices are the samples and the columns (variables) are the genes.
-
-(1) If reading in data in the form of h5/h5ad files:
+SpaDecon requires the SRT and scRNA-seq gene expression data to be stored as AnnData matrices. The rows (observations) of the matrices are the samples and the columns (variables) are the genes.  
+  
+(1) If reading in GE data in the form of h5/h5ad files:
 
 ```python
 #set working directory to spadecon_tutorial_data using os.chdir()
@@ -83,7 +83,7 @@ adata_srt.var_names_make_unique()
   
 ```
   
-(2) If reading in data in the form of csv files:
+(2) If reading in GE data in the form of csv files:
 ```python
   #set working directory to spadecon_tutorial_data using os.chdir()
   
