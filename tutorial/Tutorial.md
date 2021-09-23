@@ -138,6 +138,4 @@ st@meta.data = spadecon_proportions
 SpatialFeaturePlot(st, features = 'Tumor', alpha = c(0, 1)) + ggplot2::scale_fill_gradientn(colours = heat.colors(10, rev = TRUE),limits = c(0, 1)) + ggtitle('10X Visium Breast Cancer') + theme(plot.title = element_text(size = 15, face = "bold"))
 ```
 
-<p align="center">
-<img src="https://github.com/kpcoleman/SpaDecon/tree/main/tutorial/bc_tumor_heatmap.png" />
-</p>
+![png]('tumor_heatmap.png')
