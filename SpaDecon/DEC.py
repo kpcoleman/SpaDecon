@@ -370,7 +370,10 @@ class DEC(object):
                         print('Reached tolerance threshold. Stopped training.')
                         break
                     #print("The value of delta_js of current",str(ite+1),"th iteration is",delta_js,">= tol",tol)
-                    print('Iteration ',ite,': |JSD(Q',ite-2,'||Q',ite-1,')-JSD(Q',ite-1,'||Q',ite,')|=',abs(delta_js),'>=',str(tol[0]), sep='')
+                    if ite<=10:
+                        print('Iteration ',ite,': |JSD(Q',ite-2,'||Q',ite-1,')-JSD(Q',ite-1,'||Q',ite,')|=',abs(delta_js), sep='')
+                    else:
+                        print('Iteration ',ite,': |JSD(Q',ite-2,'||Q',ite-1,')-JSD(Q',ite-1,'||Q',ite,')|=',abs(delta_js),'>=',str(tol[0]), sep='')
                 callbacks=[EarlyStopping(monitor='loss',min_delta=10e-4,patience=4,verbose=0,mode='auto')]
                 self.model.fit(x=x,y=p,epochs=epochs_fit,batch_size=batch_size,callbacks=callbacks,shuffle=True,verbose=False)
             
