@@ -41,7 +41,6 @@ class SpaDecon(object):
             adj_sub=np.exp(-1*self.adj/(2*(l**2)))
             target_data.X=np.matmul(adj_sub,target_data.X)
 
-        #adj = np.array(pd.read_csv('/Users/kylepcoleman/Box/SpatialData/PancreaseCancer/adj_cc_a1_b49.csv', header = None))
         clf=transfer_learning_clf()
         clf.fit(source_data, target_data, tol = [0.01], threshold = threshold)
         type_pred = clf.predict(write=False)
