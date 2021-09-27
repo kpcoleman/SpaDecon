@@ -202,8 +202,8 @@ class transfer_learning_clf(object):
         celltype assignment confidence score(dictionary).
         If write is True(default), results will also be written provided save_dir
         '''
-        if not os.path.exists(save_dir):
-            os.mkdir(save_dir)
+        #if not os.path.exists(save_dir):
+        #    os.mkdir(save_dir)
         
         # Cluster prediction 
         pred = {'cell_id': self.adata_test.obs.index.tolist(), 'cluster': self.adata_test.obs["decisy_trans_True"].tolist()}
