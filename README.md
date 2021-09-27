@@ -37,7 +37,7 @@ cd SpaDecon/
 python3 setup.py install --user
 ```
 
-##Tutorial
+## Tutorial
 A markdown tutorial file can be found here: https://github.com/kpcoleman/SpaDecon/blob/main/tutorial/Tutorial.md
 
 A tutorial in the form of a jupyter notebook can be found here: https://github.com/kpcoleman/SpaDecon/blob/main/tutorial/tutorial.ipynb 
