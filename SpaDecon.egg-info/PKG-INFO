@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: SpaDecon
-Version: 1.0.9
+Version: 1.1.0
 Summary: SpaDecon: Integrating gene expression and histology information to perform cell type deconvolution on spatial transcriptomics data
 Home-page: https://github.com/kylepcoleman87/SpaDecon
 Author: Kyle Coleman
@@ -11,6 +11,10 @@ Description: # SpaDecon: cell-type deconvolution in spatial transcriptomics with
         ### Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*
         
         SpaDecon is a transfer learning-based method developed to perform cell-type deconvolution on spatially resolved transcriptomics (SRT) datasets.
+        
+        A markdown tutorial file can be found here: https://github.com/kpcoleman/SpaDecon/blob/main/tutorial/Tutorial.md
+        
+        A tutorial in the form of a jupyter notebook can be found here: https://github.com/kpcoleman/SpaDecon/blob/main/tutorial/tutorial.ipynb
         
         ![png](images/spadecon_workflow.png)
         

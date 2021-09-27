@@ -319,7 +319,7 @@ class DEC(object):
            #kl = np.array([[np.where(p[i]!=0, p[i]*np.log(p[i]/q[i]),0) for i in range(len(p))][j].sum() for j in range(len(p))]).sum()
            #print(kl)
            # print(entropy(p,q).sum())
-            print(q.shape)
+            #print(q.shape)
             #q = pd.DataFrame(q)
             #q.columns = list(celltypes)
             y_pred = q.argmax(1)
