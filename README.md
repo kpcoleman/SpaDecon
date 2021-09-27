@@ -8,4 +8,4 @@ A markdown tutorial file can be found here: https://github.com/kpcoleman/SpaDeco
 
 A tutorial in the form of a jupyter notebook can be found here: https://github.com/kpcoleman/SpaDecon/blob/main/tutorial/tutorial.ipynb
 
-![png](images/spadecon_workflow.png)
+![pdf](images/spadecon_workflow.pdf)
