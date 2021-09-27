@@ -6,8 +6,7 @@ SpaDecon is a transfer learning-based method developed to perform cell-type deco
 
 ![png](images/spadecon_workflow.png)
 
-##Installation
-### 0. Package installation
+## SpaDecon Installation
 - SpaDecon installation requires a python version of at least 3.6. The version of python can be checked by: 
 ```python
 import platform
