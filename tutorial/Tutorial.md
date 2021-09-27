@@ -78,7 +78,7 @@ SpaDecon requires the SRT and scRNA-seq GE data to be stored as AnnData matrices
 #Read annotated scRNA-seq GE data (observations = cells, variables = genes, cell types in adata_sc.obs.celltype)
 adata_sc = sc.read('bc_sc.h5ad')
 
-#Read SRT GE data (observations = spots, variables = geness)
+#Read SRT GE data (observations = spots, variables = genes)
 adata_srt = sc.read_10x_h5('V1_Breast_Cancer_Block_A_Section_1_filtered_feature_bc_matrix.h5')
 adata_srt.var_names_make_unique()
   
