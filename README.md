@@ -1,10 +1,10 @@
-# SpaDecon: cell-type deconvolution in spatial transcriptomics with transfer learning
+# SpaDecon: cell-type deconvolution in spatial transcriptomics with semi-supervised learning
 
 ### Kyle Coleman, Jian Hu, Amelia Schroeder, Edward B. Lee, Mingyao Li*
 
-SpaDecon is a transfer learning-based method developed to perform cell-type deconvolution on spatially resolved transcriptomics (SRT) datasets. SpaDecon has been shown to provide accurate cell-type deconvolution results for both Spatial Transcriptomics (ST) and 10X Visium SRT datasets. Annotated scRNA-seq gene expression data from the same type of tissue as the SRT data are required for deconvolution.
+SpaDecon is a semi-supervised learning-based method developed to perform cell-type deconvolution on spatially resolved transcriptomics (SRT) datasets. SpaDecon has been shown to provide accurate cell-type deconvolution results for both Spatial Transcriptomics (ST) and 10X Visium SRT datasets. Annotated scRNA-seq gene expression data from the same type of tissue as the SRT data are required for deconvolution.
 
-![png](images/spadecon_workflow.png)
+![png](images/spadecon_workflow.pdf)
 
 ## SpaDecon Installation
 - SpaDecon installation requires a python version of at least 3.6. The version of python can be checked by: 
