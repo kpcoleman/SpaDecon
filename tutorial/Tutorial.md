@@ -88,8 +88,7 @@ locations = locations.loc[adata_srt.obs.index]
 
 ```python
 clf = spd.SpaDecon()
-#The technology parameter is used to determine an upper bound on the number of cell types per spot (specify "Visium" or "ST")
-clf.deconvolution(source_data=adata_sc, target_data=adata_srt, histology_image=histology, spatial_locations=locations, technology='Visium')
+clf.deconvolution(source_data=adata_sc, target_data=adata_srt, histology_image=histology, spatial_locations=locations)
 spadecon_proportions = clf.props
 spadecon_proportions.to_csv('spadecon_proportions.csv')  
 ```
