@@ -36,11 +36,11 @@ class SpaDecon(object):
             target_data.obs["x5"] = np.array(spatial_locations[5])
             target_data=target_data[target_data.obs["x1"]==1]
             adj=calculate_adj_matrix(x=target_data.obs["x2"].tolist(),y=target_data.obs["x3"].to_list(), x_pixel=target_data.obs["x4"].to_list(), y_pixel=target_data.obs["x5"].to_list(), image=histology_image, histology = histology)
-            self.adj = adj
-            l = find_l(p, [i*0.1 for i in range(1,20)], self.adj)
-            adj_sub=np.exp(-1*self.adj/(2*(l**2)))
+            #self.adj = adj
+            l = find_l(p, [i*0.1 for i in range(1,20)], adj)
+            adj_sub=np.exp(-1*adj/(2*(l**2)))
             target_data.X=np.matmul(adj_sub,target_data.X)
-
+            del adj
         clf=transfer_learning_clf()
         clf.fit(source_data, target_data, tol = [0.01], threshold = threshold)
         type_pred = clf.predict(write=False)

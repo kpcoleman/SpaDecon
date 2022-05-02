@@ -89,7 +89,8 @@ class ClusteringLayer(Layer): # Re-define lot of build in functions for Keras
 class DEC(object):
     def __init__(self,
                  dims,
-                 x, # input matrix, row sample, col predictors 
+                 x_all,
+                 x_train, # input matrix, row sample, col predictors 
                  y=None, # if provided will trained with supervised
                  alpha=1.0,
                  init='glorot_uniform', #initialization method
@@ -108,7 +109,8 @@ class DEC(object):
 
         super(DEC, self).__init__()
         self.dims = dims
-        self.x=x #feature n*p, n:number of cells, p: number of genes
+        self.x_all=x_all #feature n*p, n:number of cells, p: number of genes
+        self.x_train = x_train
         self.y=y # for supervised 
         self.y_trans=y_trans
         self.input_dim = dims[0]
@@ -133,9 +135,9 @@ class DEC(object):
         # begin pretraining
         t0 = time()
         if self.is_stacked:
-            sae.fit(self.x,epochs=epochs)
+            sae.fit(self.x_all,epochs=epochs)
         else:
-            sae.fit2(self.x,epochs=epochs)
+            sae.fit2(self.x_all,epochs=epochs)
 
         self.autoencoder=sae.autoencoders
         self.encoder=sae.encoder
@@ -143,7 +145,7 @@ class DEC(object):
         self.pretrained = True
 
         #build dec model and initialize model
-        features=self.extract_features(self.x)
+        features=self.extract_features(self.x_train)
         features=np.asarray(features)
         if self.y is None: # Train data not labeled
             if isinstance(n_clusters,int): # Number of clusters known, use k-means
@@ -304,16 +306,35 @@ class DEC(object):
         trajectory_z=[] #trajectory embedding
         trajectory_l=[] #trajectory label
         js = []
+        centroids_first = self.model.layers[-1].get_weights()
+        centroids_diff_all = []
+        for i in range(len(centroids_first[0])-1):
+            for j in range(i+1, len(centroids_first[0])):
+                centroids_diff_all.append(np.sqrt(((centroids_first[0][i]-centroids_first[0][j])**2).sum()))
+        print('centroids_diff_all', centroids_diff_all)
+        print(len(centroids_diff_all))
+        print(self.init_centroid)
+#        print(centroids_first)
+#        self.model.layers[-1].trainable = False
+#        print(self.model.summary())
+#        print(self.model.layers[-1].trainable == False)
+        weights = self.model.get_weights()
         for ite in range(int(maxiter)):
+            old_weights = weights.copy()
+            weights = self.model.get_weights()
+#            print(weights)
+#            print(self.model.layers[-1].trainable == False)
+            centroids = self.model.layers[-1].get_weights()
+#            print(centroids)
             q = self.model.predict(x, verbose=0)
-            for i in range(len(q)):
-                if sum(q[i]>threshold)==0:
-                    continue
-                for j in range(len(q[i])):
-                    #if q[i][j]<0.1:
-                    if q[i][j]<threshold:
-                        q[i][j]=0
-                q[i] = q[i]/q[i].sum() 
+#            for i in range(len(q)):
+#                if sum(q[i]>threshold)==0:
+#                    continue
+#                for j in range(len(q[i])):
+#                    #if q[i][j]<0.1:
+#                    if q[i][j]<threshold:
+#                        q[i][j]=0
+#                q[i] = q[i]/q[i].sum() 
             p = self.target_distribution(q)  # update the auxiliary target distribution p
             # evaluate the clustering performance
            #kl = np.array([[np.where(p[i]!=0, p[i]*np.log(p[i]/q[i]),0) for i in range(len(p))][j].sum() for j in range(len(p))]).sum()
@@ -348,6 +369,8 @@ class DEC(object):
             #    self.model.fit(x=x,y=p,epochs=epochs_fit,batch_size=batch_size,callbacks=callbacks,shuffle=True,verbose=False)
             #    continue
             if ite>0:
+                centroids_diff = [np.sqrt(((centroids[0][i]-centroids_first[0][i])**2).sum()) for i in range(len(centroids[0]))]
+                print('centroids_diff: ', centroids_diff)
                 #js.append(distance.jensenshannon(q_last, q).sum())
                 js = distance.jensenshannon(q_last, q).sum()
                 delta_js = js_last-js
@@ -365,7 +388,14 @@ class DEC(object):
                 #if delta_js < tol and delta_js>0 and np.mean(js[ite-5:])< np.mean(js[0:5]):
                 #if delta_js < tol and delta_js>0:
                 if ite>1:
-                    if abs(delta_js) < tol and ite>10:
+                    if sum(np.array(centroids_diff)>1)>0:
+                        #print('weights:', weights)
+                        #print('old_weights:', old_weights)
+                        #print(self.encoder.get_weights())
+                        self.model.set_weights(old_weights)
+                        q = self.model.predict(x, verbose=0)
+#                        print(self.model.get_weights())
+                        #print(self.encoder.get_weights())
                         print('Iteration ',ite,': |JSD(Q',ite-2,'||Q',ite-1,')-JSD(Q',ite-1,'||Q',ite,')|=',abs(delta_js),'<', str(tol[0]), sep='')
                         print('Reached tolerance threshold. Stopped training.')
                         break
@@ -376,7 +406,6 @@ class DEC(object):
                         print('Iteration ',ite,': |JSD(Q',ite-2,'||Q',ite-1,')-JSD(Q',ite-1,'||Q',ite,')|=',abs(delta_js),'>=',str(tol[0]), sep='')
                 callbacks=[EarlyStopping(monitor='loss',min_delta=10e-4,patience=4,verbose=0,mode='auto')]
                 self.model.fit(x=x,y=p,epochs=epochs_fit,batch_size=batch_size,callbacks=callbacks,shuffle=True,verbose=False)
-            
 
             if ite % 10 ==0:
                 #print("This is the iteration of ", ite)
@@ -411,7 +440,7 @@ class DEC(object):
         #q = pd.DataFrame(q)
         #q.columns = list(celltypes)
         y_pred = q.argmax(1)
-        #celltypes = [celltypes[i] for i in list(np.sort(np.unique(y_pred)))]
+        celltypes = [celltypes[i] for i in list(np.sort(np.unique(y_pred)))]
         #print(celltypes)
         #print(q.shape)
 
