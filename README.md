@@ -4,7 +4,7 @@
 
 SpaDecon is a semi-supervised learning-based method developed to perform cell-type deconvolution on spatially resolved transcriptomics (SRT) datasets. SpaDecon has been shown to provide accurate cell-type deconvolution results for both Spatial Transcriptomics (ST) and 10X Visium SRT datasets. Annotated scRNA-seq gene expression data from the same type of tissue as the SRT data are required for deconvolution.
 
-![pdf](images/spadecon_workflow.pdf)
+![png](images/spadecon_workflow.png)
 
 ## SpaDecon Installation
 - SpaDecon installation requires a python version of at least 3.6. The version of python can be checked by: 
