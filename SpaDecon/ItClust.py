@@ -160,6 +160,8 @@ class transfer_learning_clf(object):
         weights=[i0.get_weights() for i0 in dec.model.layers]
         features=dec.encoder.predict(x_test)
         q=dec.model.predict(x_test,verbose=0)
+        q[q<threshold] = 0
+        q = q/q.sum(1)[:,np.newaxis]
         #y_pred1 = q.argmax(1)
         #dominant_celltypes = list(np.sort(np.unique(y_pred1)))
         #q = q[:,dominant_celltypes]

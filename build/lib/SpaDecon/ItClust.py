@@ -77,7 +77,7 @@ class transfer_learning_clf(object):
         #3 prefilter_specialgene: MT and ERCC
         prefilter_specialgenes(source_data)
         #4 normalization,var.genes,log1p,scale
-        sc.pp.normalize_per_cell(source_data)
+        sc.pp.normalize_total(source_data)
         #5 scale
         sc.pp.log1p(source_data)
         sc.pp.scale(source_data,zero_center=True,max_value=6)
@@ -90,13 +90,13 @@ class transfer_learning_clf(object):
         target_data.obs_names_make_unique(join="-")
         #pre-processiong
         #1.pre filter cells
-        prefilter_cells(target_data,min_genes=100) 
+        #prefilter_cells(target_data,min_genes=100) 
         #2 pre_filter genes
         prefilter_genes(target_data,min_cells=10) # avoiding all gene is zeros
         #3 prefilter_specialgene: MT and ERCC
         prefilter_specialgenes(target_data)
         #4 normalization,var.genes,log1p,scale
-        sc.pp.normalize_per_cell(target_data)
+        sc.pp.normalize_total(target_data)
 
         # select top genes
         if target_data.X.shape[0]<=1500:
@@ -133,6 +133,12 @@ class transfer_learning_clf(object):
             x_test=adata_test.X.toarray()
         else:
             x_test=adata_test.X
+        
+        adata_all = full_adata.copy()
+        if issparse(adata_all.X):
+            x_all = adata_all.X.toarray()
+        else:
+            x_all = adata_all.X
 
         #Training Data dec
         print("...Initializing source network using stacked autoencoder...")
@@ -145,7 +151,7 @@ class transfer_learning_clf(object):
         #print(":".join(["The shape of xtrain is",str(x_train.shape[0]),str(x_train.shape[1])]))
         #print(":".join(["The shape of xtest is",str(x_test.shape[0]),str(x_test.shape[1])]))
         assert x_train.shape[1]==x_test.shape[1]
-        dec=DEC(dims=dims,y=y_train,x=x_train,alpha=alpha,init=self.init,pretrain_epochs=self.pretrain_epochs,actinlayer1="tanh",softmax=softmax)
+        dec=DEC(dims=dims,y=y_train,x_all=x_all, x_train = x_train,alpha=alpha,init=self.init,pretrain_epochs=self.pretrain_epochs,actinlayer1="tanh",softmax=softmax)
         dec.compile(optimizer=SGD(lr=0.01,momentum=0.9))
         #print("dec.init_centroid",type(dec.init_centroid),dec.init_centroid)
         Embeded_z,q_pred, celltypes1 =dec.fit_supervise(x=x_train,y=y_train,epochs=2e3,batch_size=self.batch_size, celltypes = celltypes) # fine tunning
@@ -154,46 +160,51 @@ class transfer_learning_clf(object):
         weights=[i0.get_weights() for i0 in dec.model.layers]
         features=dec.encoder.predict(x_test)
         q=dec.model.predict(x_test,verbose=0)
+        q[q<threshold] = 0
+        q = q/q.sum(1)[:,np.newaxis]
+        #y_pred1 = q.argmax(1)
+        #dominant_celltypes = list(np.sort(np.unique(y_pred1)))
+        #q = q[:,dominant_celltypes]
+        #q = q/q.sum(1)[:, np.newaxis]
         self.q=q
         #np.savetxt("testq.txt",q)
-        y_pred1 = q.argmax(1)
         #print('y_pred1',y_pred1)
         #print('list(np.sort(np.unique(y_pred1)))',list(np.sort(np.unique(y_pred1))))
         #print('celltypes1',celltypes1)
-        celltypes1 = [celltypes1[i] for i in list(np.sort(np.unique(y_pred1)))]
-        print("   Source network optimized")
-        print("...Initializing target network using source network weights...")
-        val_y_pre2=dec.model.predict(x_train,verbose=0)
-        self.val_y_pre2=val_y_pre2
-        val_y_pre=[np.argmax(i) for i in val_y_pre2]
-        val_ari=metrics.adjusted_rand_score(val_y_pre,y_train.tolist())
-        t0=time()
-        print("...Optimizing target network through DEC...")
-        dec2=DEC(dims=dims,x=x_test,alpha=alpha,init=self.init,pretrain_epochs=self.pretrain_epochs,actinlayer1="tanh",softmax=softmax,transfer_feature=features,model_weights=weights,y_trans=q.argmax(axis=1))
-        dec2.compile(optimizer=SGD(0.01,0.9))
-        trajectory_z, trajectory_l, Embeded_z,q_pred, celltypes_final =dec2.fit_trajectory(x=x_test,tol=tol,epochs_fit=self.epochs_fit,batch_size=self.batch_size, celltypes = celltypes1, threshold = threshold)# Fine tunning
+        #celltypes1 = [celltypes1[i] for i in list(np.sort(np.unique(y_pred1)))]    
+        #print("   Source network optimized")
+        #print("...Initializing target network using source network weights...")
+        #val_y_pre2=dec.model.predict(x_train,verbose=0)
+        #self.val_y_pre2=val_y_pre2
+        #val_y_pre=[np.argmax(i) for i in val_y_pre2]
+        #val_ari=metrics.adjusted_rand_score(val_y_pre,y_train.tolist())
+        #t0=time()
+        #print("...Optimizing target network through DEC...")
+        #dec2=DEC(dims=dims,x=x_test,alpha=alpha,init=self.init,pretrain_epochs=self.pretrain_epochs,actinlayer1="tanh",softmax=softmax,transfer_feature=features,model_weights=weights,y_trans=q.argmax(axis=1))
+        #dec2.compile(optimizer=SGD(0.01,0.9))
+        #trajectory_z, trajectory_l, Embeded_z,q_pred, celltypes_final =dec2.fit_trajectory(x=x_test,tol=tol,epochs_fit=self.epochs_fit,batch_size=self.batch_size, celltypes = celltypes1, threshold = threshold)# Fine tunning
         #print("How many trajectories ", len(trajectory_z))
-        for i in range(len(trajectory_z)):
-            adata_test.obsm["trajectory_Embeded_z_"+str(i)]=trajectory_z[i]
-            adata_test.obs["trajectory_"+str(i)]=trajectory_l[i]
+        #for i in range(len(trajectory_z)):
+        #    adata_test.obsm["trajectory_Embeded_z_"+str(i)]=trajectory_z[i]
+        #    adata_test.obs["trajectory_"+str(i)]=trajectory_l[i]
 
-        #labels=change_to_continuous(q_pred)
-        y_pred=np.asarray(np.argmax(q_pred,axis=1),dtype=int)
+        labels=change_to_continuous(q)
+        y_pred=np.asarray(np.argmax(q,axis=1),dtype=int)
         labels=y_pred.astype('U')
         labels=pd.Categorical(values=labels,categories=natsorted(np.unique(y_pred).astype('U')))
 
-        adata_test.obsm["X_Embeded_z"+str(self.save_atr)]=Embeded_z
+        #adata_test.obsm["X_Embeded_z"+str(self.save_atr)]=Embeded_z
         adata_test.obs["dec"+str(self.save_atr)]=labels
-        adata_test.obs["maxprob"+str(self.save_atr)]=q_pred.max(1)
-        adata_test.obsm["prob_matrix"+str(self.save_atr)]=q_pred
-        adata_test.obsm["X_pcaZ"+str(self.save_atr)]=sc.tl.pca(Embeded_z)
+        adata_test.obs["maxprob"+str(self.save_atr)]=q.max(1)
+        adata_test.obsm["prob_matrix"+str(self.save_atr)]=q
+        #adata_test.obsm["X_pcaZ"+str(self.save_atr)]=sc.tl.pca(Embeded_z)
         
-        self.val_y_pre=val_y_pre
+        #self.val_y_pre=val_y_pre
         self.adata_train=adata_train
         self.adata_test=adata_test
-        self.dec2=dec2
-        self.labels=labels
-        self.celltypes_final = celltypes_final
+        #self.dec2=dec2
+        #self.labels=labels
+        self.celltypes_final = celltypes1
 
     def predict(self,save_dir="./results", write=False):
         ''' 
@@ -209,16 +220,16 @@ class transfer_learning_clf(object):
         pred = {'cell_id': self.adata_test.obs.index.tolist(), 'cluster': self.adata_test.obs["decisy_trans_True"].tolist()}
         pred = pd.DataFrame(data=pred)
         # Confidence score
-        celltype_pred={}
-        source_label=pd.Series(self.adata_train.obs["celltype"],dtype="category")
-        source_label=source_label.cat.categories.tolist()
-        num_ori_ct=self.adata_test.obsm["prob_matrix"+str(self.save_atr)].shape[1]
-        target_label=[str(i) for i in range(num_ori_ct)]
-        for i in range(num_ori_ct):
-            end_cell=self.adata_test.obs.index[self.adata_test.obs["decisy_trans_True"]==target_label[i]]
-            start_cell=self.adata_test.obs.index[self.adata_test.obs["trajectory_0"]==target_label[i]]
-            overlap=len(set(end_cell).intersection(set(start_cell)))
-            celltype_pred[target_label[i]]=[source_label[i],round(overlap/(len(end_cell)+0.0001),3)]
+        #celltype_pred={}
+        #source_label=pd.Series(self.adata_train.obs["celltype"],dtype="category")
+        #source_label=source_label.cat.categories.tolist()
+        #num_ori_ct=self.adata_test.obsm["prob_matrix"+str(self.save_atr)].shape[1]
+        #target_label=[str(i) for i in range(num_ori_ct)]
+        ##for i in range(num_ori_ct):
+        #    end_cell=self.adata_test.obs.index[self.adata_test.obs["decisy_trans_True"]==target_label[i]]
+        #    start_cell=self.adata_test.obs.index[self.adata_test.obs["trajectory_0"]==target_label[i]]
+        #    overlap=len(set(end_cell).intersection(set(start_cell)))
+        #    celltype_pred[target_label[i]]=[source_label[i],round(overlap/(len(end_cell)+0.0001),3)]
 
         # Clustering probability 
         prob=pd.DataFrame(self.adata_test.obsm["prob_matrix"+str(self.save_atr)])
@@ -234,7 +245,7 @@ class transfer_learning_clf(object):
             f.close()
             print("Results are written to ",save_dir)
 
-        return pred, prob, celltype_pred
+        return pred, prob
 
     def Umap(self):
         '''

@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="SpaDecon", 
-    version="1.1.0",
+    version="1.1.2",
     author="Kyle Coleman",
     author_email="kylecole@pennmedicine.upenn.edu",
-    description="SpaDecon: Integrating gene expression and histology information to perform cell type deconvolution on spatial transcriptomics data",
+    description="SpaDecon: cell-type deconvolution in spatial transcriptomics with semi-supervised learning",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/kylepcoleman87/SpaDecon",
