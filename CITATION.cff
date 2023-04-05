@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Coleman"
+  given-names: "Kyle"
+- family-names: "Hu"
+  given-names: "Jian"
+- family-names: "Schroeder"
+  given-names: "Amelia"
+- family-names: "Lee"
+  given-names: "Edward B"
+- family-names: "Li"
+  given-names: "Mingyao"
+
+title: "SpaDecon: cell-type deconvolution in spatial transcriptomics with semi-supervised learning"
+version: 1.1.2
+doi: 10.5281/zenodo.7735251
+date-released: 2023-03-14
+url: "https://github.com/kpcoleman/SpaDecon"
+c
