@@ -45,7 +45,7 @@ A tutorial in the form of a jupyter notebook can be found here: https://github.c
 
 
 ## Software Requirements  
-python == 3.7  
+python==3.7  
 keras==2.2.4  
 pandas==1.2.4  
 numpy==1.20.1  
