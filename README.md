@@ -7,7 +7,7 @@ SpaDecon is a semi-supervised learning-based method developed to perform cell-ty
 ![png](images/spadecon_workflow.png)
 
 ## SpaDecon Installation
-- SpaDecon installation requires a python version of 3.6 or 3.7. The version of python can be checked by: 
+- SpaDecon installation requires python version 3.7. The version of python can be checked by: 
 ```python
 import platform
 platform.python_version()
@@ -45,7 +45,7 @@ A tutorial in the form of a jupyter notebook can be found here: https://github.c
 
 
 ## Software Requirements  
-python >= 3.6  
+python == 3.7
 keras==2.2.4  
 pandas==1.2.4  
 numpy==1.20.1  
